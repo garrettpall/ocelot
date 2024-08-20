@@ -486,10 +486,28 @@ int main(void) {
   puts("**** INTERRUPTS ON ****\n");
   enable_interrupts();
 
+  green_led_enabled = true;
+
   // main loop
   while (1) {
-    gw();
-  }
+
+    if(green_led_enabled){
+      current_board->set_led(LED_GREEN, true);
+    }else{
+      current_board->set_led(LED_GREEN, false);
+    }
+
+    if(gm_ign_mode){
+      current_board->set_led(LED_BLUE, true);
+    }else{
+      current_board->set_led(LED_BLUE, false);
+    }
+
+    if(op_ctrl_mode){
+      current_board->set_led(LED_RED, true);
+    }else{
+      current_board->set_led(LED_RED, false);
+    }
 
   return 0;
 }
