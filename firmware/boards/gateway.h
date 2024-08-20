@@ -27,8 +27,20 @@ void gateway_enable_can_transceivers(bool enabled) {
 }
 
 void gateway_set_led(uint8_t color, bool enabled) {
-  UNUSED(color);
-  UNUSED(enabled);
+  switch (color){
+    case LED_RED:
+      set_gpio_output(GPIOC, 9, !enabled);
+      break;
+     case LED_GREEN:
+      set_gpio_output(GPIOC, 7, !enabled);
+      break;
+    case LED_BLUE:
+      set_gpio_output(GPIOC, 6, !enabled);
+      break;
+    default:
+      UNUSED(enabled);
+      break;
+  }
 }
 
 void gateway_set_usb_power_mode(uint8_t mode){
@@ -98,6 +110,11 @@ void gateway_init(void) {
   gateway_enable_can_transceivers(true);
   // Set normal CAN mode
   gateway_set_can_mode(CAN_MODE_NORMAL);
+
+  // Disable LEDs
+  gateway_set_led(LED_RED, false);
+  gateway_set_led(LED_GREEN, false);
+  gateway_set_led(LED_BLUE, false);
 }
 
 const harness_configuration gateway_harness_config = {
